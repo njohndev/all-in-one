@@ -137,7 +137,6 @@ services:
       - ${NEXTCLOUD_DATADIR}:/mnt/ncdata:rw
       - ${NEXTCLOUD_MOUNT}:${NEXTCLOUD_MOUNT}:rw
       - ${NEXTCLOUD_TRUSTED_CACERTS_DIR}:/usr/local/share/ca-certificates:ro
-#      - ./www.conf:/usr/local/etc/php-fpm.d/www.conf
     devices:
       - /dev/dri:/dev/dri
 
