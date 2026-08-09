@@ -137,8 +137,12 @@ services:
       - ${NEXTCLOUD_DATADIR}:/mnt/ncdata:rw
       - ${NEXTCLOUD_MOUNT}:${NEXTCLOUD_MOUNT}:rw
       - ${NEXTCLOUD_TRUSTED_CACERTS_DIR}:/usr/local/share/ca-certificates:ro
+    # 1. PASSTHROUGH DEVICE
     devices:
       - /dev/dri:/dev/dri
+    # 2. MATCH HOST PERMISSIONS
+    group_add:
+      - "991"
 
     environment:
       - NEXTCLOUD_HOST=nextcloud-aio-nextcloud
