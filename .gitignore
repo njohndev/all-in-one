@@ -13,3 +13,10 @@
 /manual-install/docker-compose.yml
 /manual-install/compose.yaml
 /manual-install/.env
+
+.env.*
+/manual-install/config.php
+/manual-install/nextcloud_database.sql
+/manual-install/www.conf.default
+/manual-install/www.conf.og
+/manual-install/backups
