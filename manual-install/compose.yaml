@@ -161,7 +161,7 @@ services:
       - NC_DOMAIN
       - ADMIN_USER=admin
       - ADMIN_PASSWORD=${NEXTCLOUD_PASSWORD}
-      - NEXTCLOUD_DATA_DIR=/mnt/16tb/ncdata
+      - NEXTCLOUD_DATA_DIR=${NEXTCLOUD_DATADIR}
       - OVERWRITEHOST=${NC_DOMAIN}
       - OVERWRITEPROTOCOL=https
       - TURN_SECRET
@@ -196,7 +196,9 @@ services:
       - TRUSTED_CACERTS_DIR=${NEXTCLOUD_TRUSTED_CACERTS_DIR}
       - STARTUP_APPS=${NEXTCLOUD_STARTUP_APPS}
       - ADDITIONAL_APKS=${NEXTCLOUD_ADDITIONAL_APKS}
-      - LIBVA_DRIVER_NAME=iHD
+      # Only relevant if the GPU passthrough block above (devices/group_add) is enabled.
+      # iHD is correct for modern Intel iGPUs (Gen 8+ / Alder Lake and newer).
+      - LIBVA_DRIVER_NAME=${NEXTCLOUD_LIBVA_DRIVER_NAME:-iHD}
       - ADDITIONAL_PHP_EXTENSIONS=${NEXTCLOUD_ADDITIONAL_PHP_EXTENSIONS}
       - INSTALL_LATEST_MAJOR
       - TALK_RECORDING_ENABLED
