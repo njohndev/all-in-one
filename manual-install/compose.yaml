@@ -580,8 +580,8 @@ services:
   #     - NET_RAW
 
 volumes:
-  # nextcloud_aio_apache:
-  #   name: nextcloud_aio_apache
+  nextcloud_aio_apache:
+    name: nextcloud_aio_apache
   # nextcloud_aio_clamav:
   #   name: nextcloud_aio_clamav
   nextcloud_aio_database:
