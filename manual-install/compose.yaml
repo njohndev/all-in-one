@@ -13,9 +13,9 @@ services:
       # nextcloud-aio-talk:
       #   condition: service_started
       #   required: false
-      nextcloud-aio-notify-push:
-        condition: service_started
-        required: false
+#      nextcloud-aio-notify-push:
+#        condition: service_started
+#        required: false
       # nextcloud-aio-whiteboard:
       #   condition: service_started
       #   required: false
@@ -48,7 +48,7 @@ services:
       - TZ=${TIMEZONE}
       - APACHE_MAX_SIZE
       - APACHE_MAX_TIME=${NEXTCLOUD_MAX_TIME}
-      - NOTIFY_PUSH_HOST=nextcloud-aio-notify-push
+#      - NOTIFY_PUSH_HOST=nextcloud-aio-notify-push
       - WHITEBOARD_HOST=nextcloud-aio-whiteboard
     volumes:
       - nextcloud_aio_nextcloud:/var/www/html:ro
@@ -217,38 +217,38 @@ services:
     networks:
       - nextcloud-aio
 
-  nextcloud-aio-notify-push:
-    image: ghcr.io/nextcloud-releases/aio-notify-push:latest
-    user: "33"
-    init: true
-    healthcheck:
-      start_period: 0s
-      test: /healthcheck.sh
-      interval: 30s
-      timeout: 30s
-      start_interval: 5s
-      retries: 3
-    expose:
-      - "7867"
-    volumes:
-      - nextcloud_aio_nextcloud:/nextcloud:ro
-    environment:
-      - NC_DOMAIN
-      - NEXTCLOUD_HOST=nextcloud-aio-nextcloud
-      - AIO_LOG_LEVEL
-      - TZ=${TIMEZONE}
-      - REDIS_HOST=nextcloud-aio-redis
-      - REDIS_HOST_PASSWORD
-      - POSTGRES_HOST=nextcloud-aio-database
-      - POSTGRES_PASSWORD
-      - POSTGRES_DB=nextcloud_database
-      - POSTGRES_USER=nextcloud
-    restart: unless-stopped
-    networks:
-      - nextcloud-aio
-    read_only: true
-    cap_drop:
-      - NET_RAW
+#  nextcloud-aio-notify-push:
+#    image: ghcr.io/nextcloud-releases/aio-notify-push:latest
+#    user: "33"
+#    init: true
+#    healthcheck:
+#      start_period: 0s
+#      test: /healthcheck.sh
+#      interval: 30s
+#      timeout: 30s
+#      start_interval: 5s
+#      retries: 3
+#    expose:
+#      - "7867"
+#    volumes:
+#      - nextcloud_aio_nextcloud:/nextcloud:ro
+#    environment:
+#      - NC_DOMAIN
+#      - NEXTCLOUD_HOST=nextcloud-aio-nextcloud
+#      - AIO_LOG_LEVEL
+#      - TZ=${TIMEZONE}
+#      - REDIS_HOST=nextcloud-aio-redis
+#      - REDIS_HOST_PASSWORD
+#      - POSTGRES_HOST=nextcloud-aio-database
+#      - POSTGRES_PASSWORD
+#      - POSTGRES_DB=nextcloud_database
+#      - POSTGRES_USER=nextcloud
+#    restart: unless-stopped
+#    networks:
+#      - nextcloud-aio
+#    read_only: true
+#    cap_drop:
+#      - NET_RAW
 
   nextcloud-aio-redis:
     image: ghcr.io/nextcloud-releases/aio-redis:latest
