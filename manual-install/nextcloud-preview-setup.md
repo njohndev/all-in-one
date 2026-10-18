@@ -141,7 +141,14 @@ Run inside `tmux` or `screen`. On a large library this takes hours.
 nc-occ preview:generate-all -vvv
 ```
 
-To keep it up to date afterwards, Preview Generator needs a cron job calling `preview:pre-generate` (AIO's built-in cron handles the standard background jobs, but verify this one is scheduled).
+If it gets interrupted, just rerun it. It should skip files that already have previews and only generate the missing ones (verify on your version). Stopping it midway does not corrupt anything; at worst the file being processed at that moment is regenerated.
+
+### `generate-all` vs `pre-generate`
+
+- `preview:generate-all`: walks every file of every user. One-off command for an existing library.
+- `preview:pre-generate`: meant for regular cron use. Only processes files added or changed since Preview Generator started tracking them, so it is quick. It ignores your existing library, which is why `generate-all` must run first.
+
+For ongoing use, schedule `nc-occ preview:pre-generate` every ~10 minutes from the host's cron or a systemd timer via `docker exec`. AIO's built-in cron handles Nextcloud's own background jobs but, as far as I know, does not run this command (verify). Without it, new uploads still get thumbnails, just generated on first view.
 
 ## 8. Rebuild the Memories index
 
@@ -151,6 +158,19 @@ Memories keeps its own index and does not rely on the preview table for its time
 nc-occ memories:index --help      # confirm available flags
 nc-occ memories:index --force     # (verify flag)
 ```
+
+### Do I need to re-index after every upload?
+
+No. Memories indexes new files automatically (on upload or via background jobs, which AIO's cron runs), so a new photo should appear in the timeline within a few minutes. Run it manually only when:
+
+- **Files were added outside Nextcloud** (copied straight into `/mnt/16tb/ncdata/...`): run `nc-occ files:scan --all` first, then `nc-occ memories:index`.
+- **Bulk import or first-time library:** automatic indexing can lag behind a large batch.
+- **After a reinstall or database restore:** the old index is gone, so do one full run.
+- **After changing Memories settings** (such as indexed folders), or if a photo shows the wrong date or location.
+
+If a normal upload does not appear after a few minutes, run `nc-occ memories:index` once and check the background jobs are running (Administration settings, Basic settings, "Cron" should show a recent run).
+
+Thumbnails are separate: a new photo gets a preview on first view regardless of indexing, and `preview:pre-generate` only makes that faster.
 
 ## 9. Troubleshooting
 
