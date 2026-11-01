@@ -209,6 +209,9 @@ services:
       - IMAGINARY_SECRET
       - WHITEBOARD_SECRET
       - WHITEBOARD_ENABLED
+      - OVERWRITECLIURL=https://jnantes.com
+      - OVERWRITEHOST=://jnantes.com
+      - OVERWRITEPROTOCOL=https
     stop_grace_period: 600s
     restart: unless-stopped
     shm_size: 134217728
